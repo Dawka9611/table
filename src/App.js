@@ -17,15 +17,9 @@ function App() {
   return (
     <div className="App">
         <Buttons/>
-            {/* {data.map((element, i ) =>{
-              console.log('wwwwww', data)
-              console.log("22222", element)
-              
-              return( */}
+ 
                 <Table information={data}/>
-                
-              {/* )
-            })} */}
+          
      
         
     </div>

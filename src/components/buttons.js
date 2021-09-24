@@ -11,17 +11,13 @@ export default function Buttons() {
     }
     return(
         <ButtonStyle>
-         
                 <button className="btn button1" onClick={AddData}>Add</button>
                 <button className="btn button2">Edit</button>
                 <button className=" btn button3">Харилцагчид</button>
                 <button className="btn button4">Delete</button>
-        
         </ButtonStyle>
     )
-
 }
-
 const ButtonStyle = styled.div`
     display: flex;
     padding: 20px 30px 0 30px;

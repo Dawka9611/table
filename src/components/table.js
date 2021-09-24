@@ -8,7 +8,6 @@ console.log("tttttttttt", information)
      <TableStyle>
             <table className="table">
                  <tbody className="tbody">
-
                 <tr className="thead">
                     {TableHeading.map((el, i)=>{
                         return(
@@ -31,10 +30,8 @@ console.log("tttttttttt", information)
                         </tr>
                     )
                 })}
-
                 </tbody>
         </table>
-      
      </TableStyle>
  )
 }
