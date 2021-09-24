@@ -1,32 +1,27 @@
-import React, { useEffect, useState } from "react";
-import Add from './component/add'
-import Edit from './component/edit'
-import axios from 'axios';
+import axios from "axios";
+import React, { useState, useEffect } from "react";
+import Buttons from "./components/buttons";
+import Table from "./components/table";
+
 
 function App() {
-  const [isData , setIsData] = useState([])
-  const [ isOpenAdd, setIsOpenAdd] = useState(false)
-  const [ isOpenEdit , setIsOpenEdit] = useState(false)
+  
+  const [data , setData] = useState([]);
+  useEffect(()=>{
+      axios.get(`https://infosystems.mn/api/insert-notifications`).then( res =>{
+        setData(res.data);
+      })
+  },[])
 
-  const Data = () => {
-    const Response = async () => {
-      const res = await axios.get('https://infosystems.mn/api/insert-notifications')
-      setIsData(res.data)
-    }
-    Response()
-    
-  }
 
-  useEffect(() => {
-    Data()
-  } , [])
-  console.log(isData);
   return (
     <div className="App">
-      <button onClick={()=>{setIsOpenAdd(!isOpenAdd)}}>Add Btn</button>
-      <button onClick={()=>{setIsOpenEdit(!isOpenEdit)}}>Edit Btn</button>
-      {isOpenAdd ? <Add setIsOpenAdd={setIsOpenAdd}/> : null}
-      {isOpenEdit ? <Edit isOpenEdit={isOpenEdit} setIsOpenEdit={setIsOpenEdit}/> : null}
+        <Buttons/>
+ 
+                <Table information={data}/>
+          
+     
+        
     </div>
   );
 }
