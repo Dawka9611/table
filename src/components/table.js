@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import styled from 'styled-components'
 import Add from "../component/add";
 import Edit from "../component/edit";
@@ -54,8 +54,8 @@ const Table = () => {
 
                 <button className="btn button1" onClick={()=>setShowModal(true)} >Add</button>
                 {selectedRow.id&&<button className="btn button2" onClick={handleEdit}>Edit</button>}
-                <button className="btn button3">Харилцагчид</button>
-                <button className="btn button4" >Delete</button>
+                <button className="btn button3">Customers</button>
+                {selectedRow.id&&<button className="btn button4" >Delete</button>}
             </ButtonStyle>
 
             <TableStyle>
@@ -94,20 +94,22 @@ export default Table;
 
 const ButtonStyle = styled.div`
     display: flex;
-    padding: 20px 30px 0 30px;
+    padding: 20px 40px 0 40px;
     .btn{  
-        padding: 5px 10px;
-        width: 100px;
-        border: none;
+        padding: 9px 20px;
+        min-width: 120px;
+        border: 1px solid #2980B9 ;
         border-radius: 3px;
-        font-weight: bolder;
-        background: #87CEFA;
-        margin-bottom: 30px;
+        background-color: #5B96C9;
+        font-weight: 600;
+        font-size: 13px;
+        color: white;
         &:hover, &:active{
-            background: #4682B4;
+            background: #2471A3;
             transform: scale(1.02);
             transform: none;
             cursor: pointer;
+            
         }
     }
     .button2{
@@ -126,18 +128,19 @@ const ButtonStyle = styled.div`
 
 
 const TableStyle = styled.div`
-    padding: 20px 30px;
-    font-size: 13px;
+    padding: 20px 40px;
+    font-size: 14px;
     border-radius: 5px;
     .table{
        width: 100%;
        border-collapse: collapse;
        .tbody{
             .thead{
-            background: linear-gradient(to right, #4682B4,#87CEFA,  #4682B4, #87CEFA);
-                .columnResizer{
-                background-color: blue;
-                width: 2px;
+            background: #5B96C9;
+            color: white;
+            th{
+                padding: 6px;
+            }
                 &:hover{
                     cursor: default;
                 }
@@ -147,8 +150,8 @@ const TableStyle = styled.div`
        }
     
        th, td{
-            border:1px solid rgba(0,0,0,0.2);
-            padding: 6px;
+            border:1px solid rgba(0,0,0,0.1);
+            padding: 3px;
        }
        th{
            font-weight: 600;
@@ -158,8 +161,11 @@ const TableStyle = styled.div`
             background-color: rgba(173, 216, 230, 0.4);
             cursor: pointer;       
             }
+           &:nth-child(odd) {
+            background-color: #F8F9F9 ;
+            border: none;
+            }
         }
-    }
 `
 const TableHeading = [
     { heading: "Тайлбар" },
