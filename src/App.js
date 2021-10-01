@@ -5,7 +5,6 @@ import Table from "./components/table";
 
 
 function App() {
-  
   const [data , setData] = useState([]);
   useEffect(()=>{
       axios.get(`https://infosystems.mn/api/insert-notifications`).then( res =>{
@@ -17,11 +16,7 @@ function App() {
   return (
     <div className="App">
         <Buttons/>
- 
-                <Table information={data}/>
-          
-     
-        
+        <Table information={data}/>
     </div>
   );
 }

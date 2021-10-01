@@ -1,17 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import Add from "../component/add";
 
 export default function Buttons() {
-    const AddData= ()=> {
-        return(
-            <div>
-
-            </div>
-        )
-    }
+    const [ showModal, setShowModal] = useState(false)
+    
     return(
         <ButtonStyle>
-                <button className="btn button1" onClick={AddData}>Add</button>
+                {showModal&&<Add showModal={showModal} setShowModal={setShowModal} />}
+                <button className="btn button1" onClick={()=>{setShowModal(prev=>!prev)}}>225252</button>
                 <button className="btn button2">Edit</button>
                 <button className=" btn button3">Харилцагчид</button>
                 <button className="btn button4">Delete</button>
