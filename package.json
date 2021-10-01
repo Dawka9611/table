@@ -9,9 +9,13 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "axios": "^0.21.4",
+<<<<<<< HEAD
     "draft-js": "^0.11.7",
+=======
+>>>>>>> 599be82a0f0cd90acc435386ebe8f6b329da0f71
     "node": "^16.9.1",
     "react": "^17.0.2",
+    "react-column-resizer": "^1.1.9",
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
     "react-modal": "^3.14.3",
