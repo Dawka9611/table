@@ -15,9 +15,7 @@ function App() {
 
   return (
     <div className="App">
-        <Buttons/>
         <Table information={data}/>
-      <Table information={data} />
     </div>
 
   );

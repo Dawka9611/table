@@ -1,10 +1,16 @@
 import React, { useRef, useState, useEffect } from "react";
 import styled from 'styled-components'
-import Buttons from "./buttons";
+import Add from "../component/add";
+import Edit from "../component/edit";
+
 
 const Table = ({ information }) => {
+    const [ showModal, setShowModal] = useState(false)
+    const [ showModalEdit, setShowModalEdit] = useState(false)
+    // const disabled = [null, undefined].includes(id)
 
     const [selectedRow, setSelectedRow] = useState({})
+
 
     const toggleRowSelect = (element) => {
         setSelectedRow(element)
@@ -12,18 +18,38 @@ const Table = ({ information }) => {
 
     const tableRef = useRef()
 
-    const handleClick = (e) => {
-        !tableRef.current.contains(e.target) && setSelectedRow({})
-    }
+    // const handleClick = (e) => {
+    //     !tableRef.current.contains(e.target) && setSelectedRow({})
+    // }
 
-    useEffect(() => {
-        document.addEventListener('mousedown', handleClick)
-        return () => document.removeEventListener('mousedown', handleClick)
-    })
+    // useEffect(() => {
+    //     document.addEventListener('mousedown', handleClick)
+    //     return () => document.removeEventListener('mousedown', handleClick)
+    // })
+
+    console.log('selectedRow :>> ', selectedRow);
+
+    const handleEdit = () =>{
+        if(selectedRow.id){
+            setShowModalEdit(true)
+        }
+    }
 
     return (
         <>
-            <Buttons id={selectedRow.id} />
+            {/* <Buttons id={selectedRow.id} /> */}
+
+            <ButtonStyle>
+                {showModal&&<Add showModal={showModal} setShowModal={setShowModal} />}
+
+                {showModalEdit&&<Edit selectedRow={selectedRow} showModal={showModalEdit} setShowModal={setShowModalEdit} />}
+
+                <button className="btn button1" onClick={()=>setShowModal(true)} >Add</button>
+                {selectedRow.id&&<button className="btn button2" onClick={handleEdit}>Edit</button>}
+                <button className="btn button3">Харилцагчид</button>
+                <button className="btn button4" >Delete</button>
+            </ButtonStyle>
+
             <TableStyle>
                 <table className="table" ref={tableRef}>
                     <tbody className="tbody">
@@ -57,6 +83,39 @@ const Table = ({ information }) => {
 }
 
 export default Table;
+
+const ButtonStyle = styled.div`
+    display: flex;
+    padding: 20px 30px 0 30px;
+    .btn{  
+        padding: 5px 10px;
+        width: 100px;
+        border: none;
+        border-radius: 3px;
+        font-weight: bolder;
+        background: #87CEFA;
+        margin-bottom: 30px;
+        &:hover, &:active{
+            background: #4682B4;
+            transform: scale(1.02);
+            transform: none;
+            cursor: pointer;
+        }
+    }
+    .button2{
+        margin-left: 5%;
+    }
+    .button3{
+        width: 120px;
+        margin-left: 5%;
+        
+    }
+    .button4{
+        margin-left:60%;
+    }
+    
+`
+
 
 const TableStyle = styled.div`
     padding: 20px 30px;

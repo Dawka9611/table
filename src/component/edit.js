@@ -6,7 +6,7 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const GetDataURL = 'https://infosystems.mn/api/insert-notifications'
-const AddModal = ({showModal, setShowModal}) => {
+const AddModal = ({showModal, setShowModal, selectedRow}) => {
     const [ cName, setCName ] = useState('');
     const [ text, setText] = useState('')
     const [ fileName , setFileName ] = useState('')
