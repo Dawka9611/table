@@ -67,7 +67,7 @@ const AddModal = ({showModal, setShowModal}) => {
         })
         setAllValues({ ...allValues , ...final , file_url : fileName.url})
 
-         axios.post(`${GetDataURL}` , allValues).then((resp) => {
+         axios.post(`${GetDataURL}` ,  allValues ).then((resp) => {
              setShowModal(false)
             console.log(resp);
         }).catch((err)=>{
@@ -165,10 +165,10 @@ const AddModal = ({showModal, setShowModal}) => {
                                     <input  name='is_active' onChange={changeHandler} type="checkbox" className="active setValue" value={isActive ? 0 : 1} />
                                     <div className="inputTitle">Идэвхтэй</div>
                             </div>
-                            <div className="inputTitle">Хэрэглэгчийн дэлгэцэнд харуулах PDF файл</div>
-                            <div className="display" >
-                                <input type="text" disabled={allValues.filetype === '2' ? true : false} className="setValue" name="name" value={fileName.name}/>
-                                <button disabled={allValues.filetype === '2' ? true : false} className="ownButton" onClick={HandleAddFile}><FaPlus/></button>
+                            <div style={allValues.filetype === '1' ? {display: 'block'} : {display : 'none'}} className="inputTitle">Хэрэглэгчийн дэлгэцэнд харуулах PDF файл</div>
+                            <div style={allValues.filetype === '1' ? {display: 'flex'} : {display : 'none'}} className="display" >
+                                <input className="setValue" name="name" value={fileName.name}/>
+                                <button className="ownButton" onClick={HandleAddFile}><FaPlus/></button>
                                 <div className="fileContainer" style={file ? {display : 'flex' } : {display : 'none'}}>
                                     <div className="uploadFile">
                                         <div className="upHeader">Upload</div>
@@ -190,10 +190,10 @@ const AddModal = ({showModal, setShowModal}) => {
                                     <button onClick={()=>{setShowModal(false)}} className="ownButton">Болих</button>
                                 </div>
                             </div>
-                            <CKEditor
+                           <div style={allValues.filetype === '2' ? {display: 'block'} : {display : 'none'}}>
+                           <CKEditor
                             editor={ClassicEditor}
                             data={text}
-                            disabled={allValues.filetype === '1' ? true : false}
                             name="news_text" className="setValue"
                             onChange={(event , editor) => {
                                 const data =editor.getData()
@@ -201,6 +201,7 @@ const AddModal = ({showModal, setShowModal}) => {
                                 setAllValues( state => ({ ...state , news_text : text}))
                             }}
                             />
+                           </div>
                         </div>
                     </form>
                 </div>

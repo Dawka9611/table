@@ -1,4 +1,4 @@
-import React, { useState  } from "react";
+import React, { useEffect, useState  } from "react";
 import {FaRegWindowMinimize ,FaExpand ,FaTimes ,FaPlus} from 'react-icons/fa'
 import axios from 'axios';
 import styled, { keyframes } from "styled-components";
@@ -6,10 +6,10 @@ import { CKEditor } from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 const GetDataURL = 'https://infosystems.mn/api/insert-notifications'
-const AddModal = ({showModal, setShowModal, selectedRow}) => {
+const AddModal = ({showModal, setShowModal , selectedRow}) => {
     const [ cName, setCName ] = useState('');
     const [ text, setText] = useState('')
-    const [ fileName , setFileName ] = useState('')
+    const [ fileName , setFileName ] = useState({})
     const [ file , setFile ] = useState(false)
     const [ isActive , setIsActive ] = useState(false)
     const [isMaxSize, setIsMaxSize] = useState(false);
@@ -22,10 +22,15 @@ const AddModal = ({showModal, setShowModal, selectedRow}) => {
         expire_date : '',
         acount :'',
         is_active : '',
-        filetype : '' ,
+        filetype : '',
         file_url  :'',
         news_text:  '',
     })
+
+    useEffect(()=>{
+        setAllValues(selectedRow)
+        setFileName({name: selectedRow?.pdf_file})
+    },[])
     
     const ToggleMaxSize = () => {
         setIsMaxSize(!isMaxSize);
@@ -33,19 +38,20 @@ const AddModal = ({showModal, setShowModal, selectedRow}) => {
 
     const changeHandler = e => {
         setAllValues({...allValues , [e.target.name]: e.target.value})
-     }
-/*      const uploadHandle = (e) =>{
+    }
+
+     const uploadHandle = (e) =>{
         let data =  new FormData();
         data.append( "files", e.target.files[0])
 
-        axios.post('https://infosystems.mn/api/upload' , data, { headers:{ Authorization:`Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjMyNzM5MDI1LCJleHAiOjE2MzUzMzEwMjV9.vLNcPqMXq1vCWTuLodWZa_s9zV2DHWWJtF5aP0gJtj4` } }).then((response) =>{
+/*         axios.post('https://infosystems.mn/api/upload' , data, { headers:{ Authorization:`Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NiwiaWF0IjoxNjMyNzM5MDI1LCJleHAiOjE2MzUzMzEwMjV9.vLNcPqMXq1vCWTuLodWZa_s9zV2DHWWJtF5aP0gJtj4` } }).then((response) =>{
                 setFileName (response.data[0])
                 setAllValues(prev => ({ ...prev , file_url : response.data[0].url }))
                 setFile(false)
             }).catch((error) => {
                 console.log(error);
-            })
-    } */
+            }) */
+    }
     
      const Submit = (e) => {
         e.preventDefault()
@@ -65,14 +71,14 @@ const AddModal = ({showModal, setShowModal, selectedRow}) => {
                 final[elem.name] = elem.value
             }
         })
-        setAllValues({ ...allValues , ...final , file_url : fileName.url})
+        setAllValues({ ...allValues , ...final, file_url : fileName.url})
 
-/*          axios.post(`${GetDataURL}` , allValues).then((resp) => {
+        axios.put(`${GetDataURL}/${allValues.id}` , allValues).then((resp) => {
              setShowModal(false)
             console.log(resp);
         }).catch((err)=>{
             console.log(err);
-        })  */
+        })  
      }
 
     const HandleClose = () =>{
@@ -88,12 +94,18 @@ const AddModal = ({showModal, setShowModal, selectedRow}) => {
         e.preventDefault()
         setFile(true)
     }
+
+    console.log('is active ?', selectedRow.is_active)
+    console.log('filetype ?',selectedRow.filetype)
+    console.log('allvall' , allValues.filetype)
+
+    console.log('allValues :>> ', allValues);
     return(
         <>
             <Container>
                 <div className={`container ${cName}`} style={ isMaxSize ? { height : "100%" , width : "100%" } : null}>
                     <div className="header">
-                        <div className="inputTitle">Шинэ мэдэгдэл add</div>
+                        <div className="inputTitle">Шинэ мэдэгдэл edit</div>
                         <div className="icons">
                             <FaRegWindowMinimize/>
                             <FaExpand onClick={() => {ToggleMaxSize()}}/>
@@ -103,58 +115,61 @@ const AddModal = ({showModal, setShowModal, selectedRow}) => {
                     <form onSubmit={Submit}>
                         <div className="content" >
                             <div className="inputTitle">Гарчиг</div>
-                            <input required className="input setValue" type="text" name="description" onChange={changeHandler}/>
+                            <input required defaultValue={selectedRow.description} className="input setValue" type="text" name="description" onChange={changeHandler}/>
                             <div className="items">
                                 <div className="item"  style={{marginRight : '20px'}}>
                                     <div className="inputTitle">Хувилбар</div>
-                                    <select  className="setValue" name='macsversion' onChange={changeHandler}>
-                                        <option selected disabled defaultValue="">Сонгоно уу</option>
+                                    <select className="setValue"  name='macsversion' onChange={changeHandler} defaultValue={selectedRow.macsversion}>
                                         <option value={0}>Бүгд</option>
                                         <option value={1}>MacsXE3-Макс аж ахуй нэгж</option>
                                         <option value={2}>MacsF - Эмийн худалдаа</option>
                                     </select>
                                     <div className="inputTitle">Хэнрүү</div>
-                                    <select name="to_customer" className="setValue" defaultValue={-1} onChange={changeHandler}>
-                                        <option disabled selected value={-1}>Сонгоно уу</option>
+                                    <select name="to_customer" className="setValue" defaultValue={selectedRow.to_customer} onChange={changeHandler}>
                                         <option value={0}>Бүх харилцагч руу</option>
                                         <option value={1}>Сонгосон харилцагч руу</option>
                                     </select>
                                     <div className="time">
                                         <div className="date">
                                             <div className="inputTitle">Хэдийг хүртэл</div>
-                                            <input name='expire_date' className="setValue" onChange={changeHandler} type="date"/>
+                                            <input defaultValue={selectedRow.expire_date} name='expire_date' className="setValue" onChange={changeHandler} type="date"/>
                                         </div>
                                         <div>
                                             <div className="inputTitle">Хэдэн удаа</div>
-                                            <input name="acount"className="setValue" onChange={changeHandler} type="number"/>
+                                            <input defaultValue={selectedRow.acount} name="acount"className="setValue" onChange={changeHandler} type="number"/>
                                         </div>
                                     </div>
                                 </div>
                                 <div className="item">
                                     <div className="inputTitle">Программ</div>
-                                    <select name='apptype' className="setValue" defaultValue={-1} onChange={changeHandler}>
-                                        <option disabled selected value={-1}>Сонгоно уу</option>
+                                    <select name='apptype' className="setValue" defaultValue={selectedRow.apptype} onChange={changeHandler}>
                                         <option value={0}>Бүгд</option>
                                         <option value={1}>Macs санхүү</option>
                                         <option value={2}>Посын програм</option>
                                     </select>
                                     <div className="inputTitle">Харилцагчийн регистрийн дугаар</div>
-                                    <input type="text" disabled={allValues.to_customer === '1' ? false : true } required  className="setValue" name="customer_id" onChange={changeHandler}/>
+                                    <input defaultValue={selectedRow.customer_id} type="text" disabled={allValues.to_customer === '0' /* ?? */ ? false : true } required  className="setValue" name="customer_id" onChange={changeHandler}/>
                                     <div className="selectType">
                                         <div className="typeTitle">Төрөл</div>
+
                                         <input
-                                        required
-                                        type="radio" 
-                                        name="filetype" 
-                                        className="setValue fileType"
-                                        onChange={changeHandler}
-                                        value={1}/>
+                                            required
+                                            checked={allValues.filetype===1 ||allValues.filetype=== '1'?true:false}
+                                            type="radio" 
+                                            name="filetype" 
+                                            className="setValue fileType"
+                                            onChange={changeHandler}
+
+                                            value={1}
+                                        />
+
                                         <div>PDF файлаар</div>
                                         <input
                                         required
                                         type="radio" 
                                         className="setValue fileType" 
                                         name="filetype"
+                                        checked={allValues.filetype===2||allValues.filetype=== '2'?true:false}
                                         onChange={changeHandler}
                                         value={2}/>
                                         <div className="inputTitle">HTML форматаар</div>
@@ -162,18 +177,18 @@ const AddModal = ({showModal, setShowModal, selectedRow}) => {
                                 </div>
                             </div>
                             <div className="statusSelect">
-                                    <input  name='is_active' onChange={changeHandler} type="checkbox" className="active setValue" value={isActive ? 0 : 1} />
+                                    <input checked={selectedRow.is_active} defaultValue={selectedRow.is_active} name='is_active' onChange={changeHandler} type="checkbox" className="active setValue" value={isActive ? 0 : 1} />
                                     <div className="inputTitle">Идэвхтэй</div>
                             </div>
-                            <div className="inputTitle">Хэрэглэгчийн дэлгэцэнд харуулах PDF файл</div>
-                            <div className="display" >
-                                <input type="text" disabled={allValues.filetype === '2' ? true : false} className="setValue" name="name" value={fileName.name}/>
-                                <button disabled={allValues.filetype === '2' ? true : false} className="ownButton" onClick={HandleAddFile}><FaPlus/></button>
+                            <div style={allValues.filetype === 1 || allValues.filetype === '1' ? {display: 'block'} : {display : 'none'}} className="inputTitle">Хэрэглэгчийн дэлгэцэнд харуулах PDF файл</div>
+                            <div style={allValues.filetype === 1 || allValues.filetype === '1' ? {display: 'flex'} : {display : 'none'}} className="display" >
+                                <input className="setValue" name="name" value={fileName.name}/>
+                                <button className="ownButton" onClick={HandleAddFile}><FaPlus/></button>
                                 <div className="fileContainer" style={file ? {display : 'flex' } : {display : 'none'}}>
                                     <div className="uploadFile">
                                         <div className="upHeader">Upload</div>
                                         <div className="fileUp">
-                                            <input value="" /* onChange={uploadHandle} */ type="file" name="file_url" className="setValue" id="id" /* accept=".pdf" */ />
+                                            <input value="" onChange={uploadHandle} type="file" name="file_url" className="setValue" id="id" /* accept=".pdf" */ />
                                             <label className="file" htmlFor="id">
                                                 Choose File
                                             </label>
@@ -190,10 +205,10 @@ const AddModal = ({showModal, setShowModal, selectedRow}) => {
                                     <button onClick={()=>{setShowModal(false)}} className="ownButton">Болих</button>
                                 </div>
                             </div>
-                            <CKEditor
+                           <div style={allValues.filetype === 2 ||allValues.filetype === '2'? {display: 'block'} : {display : 'none'}}>
+                           <CKEditor
                             editor={ClassicEditor}
                             data={text}
-                            disabled={allValues.filetype === '1' ? true : false}
                             name="news_text" className="setValue"
                             onChange={(event , editor) => {
                                 const data =editor.getData()
@@ -201,6 +216,7 @@ const AddModal = ({showModal, setShowModal, selectedRow}) => {
                                 setAllValues( state => ({ ...state , news_text : text}))
                             }}
                             />
+                           </div>
                         </div>
                     </form>
                 </div>

@@ -2,13 +2,14 @@ import React, { useRef, useState, useEffect } from "react";
 import styled from 'styled-components'
 import Add from "../component/add";
 import Edit from "../component/edit";
+import axios from "axios";
 
 
-const Table = ({ information }) => {
+const Table = () => {
+    const [data, setData] = useState([]);
     const [ showModal, setShowModal] = useState(false)
     const [ showModalEdit, setShowModalEdit] = useState(false)
     // const disabled = [null, undefined].includes(id)
-
     const [selectedRow, setSelectedRow] = useState({})
 
 
@@ -26,6 +27,13 @@ const Table = ({ information }) => {
     //     document.addEventListener('mousedown', handleClick)
     //     return () => document.removeEventListener('mousedown', handleClick)
     // })
+
+    useEffect(() => {
+        axios.get(`https://infosystems.mn/api/insert-notifications`).then(res => {
+          setData(res.data);
+        })
+    }, [showModal, showModalEdit])
+
 
     console.log('selectedRow :>> ', selectedRow);
 
@@ -62,7 +70,7 @@ const Table = ({ information }) => {
                                 )
                             })}
                         </tr>
-                        {information.map((el, i) => {
+                        {data.map((el, i) => {
                             return (
                                 <tr key={i} className="tableRow" onClick={() => toggleRowSelect(el)} style={el.id === selectedRow.id ? { backgroundColor: " rgba(173, 216, 230, 0.4)" } : null}>
                                     <td> {el.description} </td>
