@@ -95,9 +95,9 @@ const AddModal = ({showModal, setShowModal}) => {
                     <div className="header">
                         <div className="inputTitle">Шинэ мэдэгдэл add</div>
                         <div className="icons">
-                            <FaRegWindowMinimize/>
-                            <FaExpand onClick={() => {ToggleMaxSize()}}/>
-                            <FaTimes onClick={HandleClose}/>
+                            <FaRegWindowMinimize className="icon"/>
+                            <FaExpand className="icon" onClick={() => {ToggleMaxSize()}}/>
+                            <FaTimes className="icon" onClick={HandleClose}/>
                         </div>
                     </div>
                     <form onSubmit={Submit}>
@@ -106,6 +106,7 @@ const AddModal = ({showModal, setShowModal}) => {
                             <input required className="input setValue" type="text" name="description" onChange={changeHandler}/>
                             <div className="items">
                                 <div className="item"  style={{marginRight : '20px'}}>
+                                 
                                     <div className="inputTitle">Хувилбар</div>
                                     <select  className="setValue" name='macsversion' onChange={changeHandler}>
                                         <option selected disabled defaultValue="">Сонгоно уу</option>
@@ -113,8 +114,10 @@ const AddModal = ({showModal, setShowModal}) => {
                                         <option value={1}>MacsXE3-Макс аж ахуй нэгж</option>
                                         <option value={2}>MacsF - Эмийн худалдаа</option>
                                     </select>
+                                 
+                             
                                     <div className="inputTitle">Хэнрүү</div>
-                                    <select name="to_customer" className="setValue" defaultValue={-1} onChange={changeHandler}>
+                                    <select name="to_customer" className=" input setValue" defaultValue={-1} onChange={changeHandler}>
                                         <option disabled selected value={-1}>Сонгоно уу</option>
                                         <option value={0}>Бүх харилцагч руу</option>
                                         <option value={1}>Сонгосон харилцагч руу</option>
@@ -131,7 +134,7 @@ const AddModal = ({showModal, setShowModal}) => {
                                     </div>
                                 </div>
                                 <div className="item">
-                                    <div className="inputTitle">Программ</div>
+                                <div className="inputTitle">Программ</div>
                                     <select name='apptype' className="setValue" defaultValue={-1} onChange={changeHandler}>
                                         <option disabled selected value={-1}>Сонгоно уу</option>
                                         <option value={0}>Бүгд</option>
@@ -139,7 +142,7 @@ const AddModal = ({showModal, setShowModal}) => {
                                         <option value={2}>Посын програм</option>
                                     </select>
                                     <div className="inputTitle">Харилцагчийн регистрийн дугаар</div>
-                                    <input type="text" disabled={allValues.to_customer === '1' ? false : true } required  className="setValue" name="customer_id" onChange={changeHandler}/>
+                                    <input type="text" disabled={allValues.to_customer === '1' ? false : true } required  className="input setValue" name="customer_id" onChange={changeHandler}/>
                                     <div className="selectType">
                                         <div className="typeTitle">Төрөл</div>
                                         <input
@@ -246,6 +249,7 @@ const Container = styled.div`
     input {
         outline: none;
         margin-bottom : 20px;
+        padding: 5px;
     }
     input[type="file"] {
         display: none;
@@ -260,10 +264,14 @@ const Container = styled.div`
             display : flex;
             justify-content : space-between ;
             .icons {
-                margin : 0 ;
+                margin : 0;
+                .icon{
+                    margin-left: 15px;
+                }
             }
         }
         .content{
+            width: 90%;
             padding : 30px;
         }
         .input{
@@ -278,6 +286,7 @@ const Container = styled.div`
             padding: 10px;
             padding-left : 20px;
             padding-right : 20px;
+            border-radius: 3px;
             background-color : #5fa2dd;
             color : #fff;
             border : none ;
