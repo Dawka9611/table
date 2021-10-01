@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState ,useEffect } from "react";
 import styled from 'styled-components'
 import Add from "../component/add";
 import Edit from "../component/edit";
@@ -47,7 +47,7 @@ const Table = () => {
         <>
             {/* <Buttons id={selectedRow.id} /> */}
 
-            <ButtonStyle>
+            <ButtonStyle >
                 {showModal&&<Add showModal={showModal} setShowModal={setShowModal} />}
 
                 {showModalEdit&&<Edit selectedRow={selectedRow} showModal={showModalEdit} setShowModal={setShowModalEdit} />}
@@ -93,7 +93,7 @@ const Table = () => {
 export default Table;
 
 const ButtonStyle = styled.div`
-    display: flex;
+    display: 'flex';
     padding: 20px 40px 0 40px;
     .btn{  
         padding: 9px 20px;
