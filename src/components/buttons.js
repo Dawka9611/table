@@ -1,23 +1,20 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 
-export default function Buttons() {
-    const AddData= ()=> {
-        return(
-            <div>
+const Buttons = ({ id }) => {
+    const disabled = [null, undefined].includes(id)
 
-            </div>
-        )
-    }
-    return(
+    return (
         <ButtonStyle>
-                <button className="btn button1" onClick={AddData}>Add</button>
-                <button className="btn button2">Edit</button>
-                <button className=" btn button3">Харилцагчид</button>
-                <button className="btn button4">Delete</button>
+            <button className="btn button1" >Add</button>
+            <button className="btn button2" style={disabled ? { backgroundColor: " rgba(173, 216, 230, 0.4)",transform: "none", cursor: "not-allowed"} : null}>Edit</button>
+            <button className="btn button3">Харилцагчид</button>
+            <button className="btn button4" style={disabled ? { backgroundColor: " rgba(173, 216, 230, 0.4)",transform: "none", cursor: "not-allowed"} : null}>Delete</button>
         </ButtonStyle>
     )
 }
+
+export default Buttons
 const ButtonStyle = styled.div`
     display: flex;
     padding: 20px 30px 0 30px;
@@ -28,9 +25,12 @@ const ButtonStyle = styled.div`
         border-radius: 3px;
         font-weight: bolder;
         background: #87CEFA;
-        :hover{
+        margin-bottom: 30px;
+        &:hover, &:active{
             background: #4682B4;
             transform: scale(1.02);
+            transform: none;
+            cursor: pointer;
         }
     }
     .button2{
@@ -39,6 +39,7 @@ const ButtonStyle = styled.div`
     .button3{
         width: 120px;
         margin-left: 5%;
+        
     }
     .button4{
         margin-left:60%;
